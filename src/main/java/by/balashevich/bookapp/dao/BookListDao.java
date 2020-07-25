@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookListDao extends BaseDao<Long, Book> {
 
-    List<Book> findByTitle(String title) throws DaoApplicationException;
+    List<Book> findByTitle(String ...title) throws DaoApplicationException;
 
     List<Book> findByAuthor(String author) throws DaoApplicationException;
 
@@ -17,8 +17,6 @@ public interface BookListDao extends BaseDao<Long, Book> {
     List<Book> findByLanguage(Language language) throws DaoApplicationException;
 
     List<Book> sortById() throws DaoApplicationException;
-
-    List<Book> sortByTitle() throws DaoApplicationException;
 
     List<Book> sortByAuthor() throws DaoApplicationException;
 

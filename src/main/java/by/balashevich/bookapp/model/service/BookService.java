@@ -12,7 +12,7 @@ public interface BookService {
 
     boolean removeBook(Book book) throws ServiceApplicationException;
 
-    Optional<Book> findById(long bookId);
+    Optional<Book> findById(long bookId) throws ServiceApplicationException;
 
     List<Book> findByTitle(String title) throws ServiceApplicationException;
 

@@ -1,6 +1,7 @@
 package by.balashevich.bookapp.connection;
 
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -62,7 +63,6 @@ public class ConnectionPool {
         Connection connection;
         try {
             connection = freeConnections.take();
-            System.out.println(connection.getClass().getSimpleName());
             surrenderedConnections.offer((ProxyConnection) connection);
         } catch (InterruptedException e) {  // TODO: 23.07.2020 is it ok to throw custom exception on interrupted
             throw new ConnectionDatabaseException("Error while getting connection", e);
@@ -94,6 +94,7 @@ public class ConnectionPool {
     private void deregisterDrivers() throws SQLException {
         while(DriverManager.getDrivers().hasMoreElements()){
             DriverManager.deregisterDriver(DriverManager.getDrivers().nextElement());
+            MysqlDataSource dataSource = new MysqlDataSource();
         }
     }
 }

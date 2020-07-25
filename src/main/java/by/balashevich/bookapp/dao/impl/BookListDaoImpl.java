@@ -21,10 +21,13 @@ public class BookListDaoImpl implements BookListDao {
     private static final String SQL_REMOVE_BOOK = "DELETE FROM book " +
             "WHERE title = ? AND authors = ? AND year_publication = ? AND language = ?";
     private static final String SQL_FIND_ALL_BOOKS = "SELECT bookid, title, authors, year_publication, " +
-            "language FROM book ORDER BY bookid";
+            "language FROM book";
     private static final String SQL_FIND_BOOK_BY_ID = "SELECT bookid, title, authors, year_publication, " +
             "language FROM book WHERE (bookid = ?) OR (bookid IS NULL)"; // FIXME: 22.07.2020 change offer
-    private static final String SQL_FIND_BOOKS_BY_TITLE = "SELECT bookid, title, authors, year_publication, language FROM book WHERE (? IS NULL) OR (title = ?) ORDER BY title";
+    private static final String SQL_FIND_BOOKS_BY_TITLE = "SELECT bookid, title, authors, year_publication, " +
+            "language FROM book WHERE title = ? ORDER BY title";
+    private static final String SQL_SORT_BOOKS_BY_TITLE = "SELECT bookid, title, authors, year_publication, " +
+            "language FROM book ORDER BY title";
     private static final String BOOKID_COLUMN = "bookid";
     private static final String TITLE_COLUMN = "title";
     private static final String AUTHORS_COLUMN = "authors";
@@ -35,10 +38,12 @@ public class BookListDaoImpl implements BookListDao {
     public boolean add(Book book) throws DaoApplicationException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         boolean isBookAdded;
+        Connection connection = null;
+        PreparedStatement statement = null;
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_ADD_BOOK)) {
-
+        try {
+            connection = connectionPool.getConnection();
+            statement = connection.prepareStatement(SQL_ADD_BOOK);
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthors().toString());
             statement.setInt(3, book.getYearPublication());
@@ -47,6 +52,9 @@ public class BookListDaoImpl implements BookListDao {
             isBookAdded = executeResult > 0;
         } catch (SQLException | ConnectionDatabaseException e) {
             throw new DaoApplicationException("Error while adding book to storage", e);
+        } finally {
+            close(connection);
+            close(statement);
         }
 
         return isBookAdded;
@@ -56,10 +64,12 @@ public class BookListDaoImpl implements BookListDao {
     public boolean remove(Book book) throws DaoApplicationException {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         boolean isBookRemoved;
+        Connection connection = null;
+        PreparedStatement statement = null;
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_REMOVE_BOOK)) {
-
+        try {
+            connection = connectionPool.getConnection();
+            statement = connection.prepareStatement(SQL_REMOVE_BOOK);
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthors().toString());
             statement.setInt(3, book.getYearPublication());
@@ -68,6 +78,9 @@ public class BookListDaoImpl implements BookListDao {
             isBookRemoved = executeResult > 0;
         } catch (SQLException | ConnectionDatabaseException e) {
             throw new DaoApplicationException("Error while removing book to storage", e);
+        } finally {
+            close(statement);
+            close(connection);
         }
 
         return isBookRemoved;
@@ -116,7 +129,7 @@ public class BookListDaoImpl implements BookListDao {
              PreparedStatement statement = connection.prepareStatement(SQL_FIND_BOOK_BY_ID)) {
 
             statement.setLong(1, findingBookId);
-            try (ResultSet resultSet = statement.executeQuery()) { // TODO: 22.07.2020 is syntax correct
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     long bookId = resultSet.getLong(BOOKID_COLUMN);
                     String title = resultSet.getString(TITLE_COLUMN);
@@ -136,20 +149,26 @@ public class BookListDaoImpl implements BookListDao {
     }
 
     @Override
-    public List<Book> findByTitle(String findingTitle) throws DaoApplicationException {
+    public List<Book> findByTitle(String ...findingTitle) throws DaoApplicationException {
         List<Book> targetBooks = new ArrayList<>();
         BookCreator bookCreator = new BookCreator();
         ConnectionPool connectionPool = ConnectionPool.getInstance();
+        Connection connection = null;
+        PreparedStatement statement = null;
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_FIND_BOOKS_BY_TITLE)) {
-
-            statement.setString(1, findingTitle);
-            try (ResultSet resultSet = statement.executeQuery()) { // TODO: 22.07.2020 is syntax correct (try try)
+        try {
+            connection = connectionPool.getConnection();
+            if (findingTitle.length != 0) {
+                statement = connection.prepareStatement(SQL_FIND_BOOKS_BY_TITLE);
+                statement.setString(1, findingTitle[0]);
+            } else{
+                statement = connection.prepareStatement(SQL_SORT_BOOKS_BY_TITLE);
+            }
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     long bookId = resultSet.getLong(BOOKID_COLUMN);
                     String title = resultSet.getString(TITLE_COLUMN);
-                    String authorsData = resultSet.getString(TITLE_COLUMN);
+                    String authorsData = resultSet.getString(AUTHORS_COLUMN);
                     List<String> authors = bookCreator.createList(authorsData);
                     int yearPublication = resultSet.getInt(YEAR_PUBLICATION_COLUMN);
                     Language language = Language.valueOf(resultSet.getString(LANGUAGE_COLUMN));
@@ -160,6 +179,9 @@ public class BookListDaoImpl implements BookListDao {
             }
         } catch (SQLException | ConnectionDatabaseException e) {
             throw new DaoApplicationException("Error while finding books by title from storage", e);
+        } finally {
+            close(statement);
+            close(connection);
         }
 
         return targetBooks;
@@ -188,14 +210,6 @@ public class BookListDaoImpl implements BookListDao {
 
     @Override
     public List<Book> sortById() {
-        List<Book> sortedBooks = new ArrayList<>();
-
-        return sortedBooks;
-    }
-
-    @Override
-    public List<Book> sortByTitle() throws DaoApplicationException {
-
         List<Book> sortedBooks = new ArrayList<>();
 
         return sortedBooks;

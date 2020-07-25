@@ -1,5 +1,7 @@
 package by.balashevich.bookapp.dao;
 
+import by.balashevich.bookapp.connection.ConnectionPool;
+import by.balashevich.bookapp.exception.ConnectionDatabaseException;
 import by.balashevich.bookapp.exception.DaoApplicationException;
 import by.balashevich.bookapp.model.entity.Entity;
 
@@ -32,8 +34,8 @@ public interface BaseDao<K, T extends Entity> {
     default void close(Connection connection) throws DaoApplicationException {
         if (connection != null) {
             try {
-                connection.close();
-            } catch (SQLException e) {
+                ConnectionPool.getInstance().releaseConnection(connection);
+            } catch (ConnectionDatabaseException e) {
                 throw new DaoApplicationException("Error while close connection", e);
             }
         }

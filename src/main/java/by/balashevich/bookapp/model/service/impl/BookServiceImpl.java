@@ -43,20 +43,20 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> findById(long bookId) {
+    public Optional<Book> findById(long bookId) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
         Optional<Book> targetBook = Optional.empty();
         try {
             targetBook = Optional.of(bookListDao.findById(bookId));
         } catch (DaoApplicationException e) {
-            e.printStackTrace();
+            throw new ServiceApplicationException("Error while finding book by Id from storage", e);
         }
 
         return targetBook;
     }
 
     @Override
-    public List<Book> findByTitle(String title) {
+    public List<Book> findByTitle(String title) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
         BookValidator bookValidator = new BookValidator();
         List<Book> targetBooks = new ArrayList<>();
@@ -65,7 +65,7 @@ public class BookServiceImpl implements BookService {
             try {
                 targetBooks = bookListDao.findByTitle(title);
             } catch (DaoApplicationException e) {
-                e.printStackTrace();
+                throw new ServiceApplicationException("Error while finding book by Title from storage", e);
             }
         }
 
@@ -123,7 +123,7 @@ public class BookServiceImpl implements BookService {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
         List<Book> sortedList = null;
         try {
-            sortedList = bookListDao.sortByTitle();
+            sortedList = bookListDao.findByTitle();
         } catch (DaoApplicationException e) {
             e.printStackTrace();
         }
