@@ -1,8 +1,8 @@
 package by.balashevich.bookapp.model.service.impl;
 
 import by.balashevich.bookapp.dao.impl.BookListDaoImpl;
-import by.balashevich.bookapp.exception.ServiceApplicationException;
 import by.balashevich.bookapp.exception.DaoApplicationException;
+import by.balashevich.bookapp.exception.ServiceApplicationException;
 import by.balashevich.bookapp.model.entity.Book;
 import by.balashevich.bookapp.model.entity.Language;
 import by.balashevich.bookapp.model.service.BookService;
@@ -45,7 +45,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<Book> findById(long bookId) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
-        Optional<Book> targetBook = Optional.empty();
+        Optional<Book> targetBook;
+
         try {
             targetBook = Optional.of(bookListDao.findById(bookId));
         } catch (DaoApplicationException e) {
@@ -73,85 +74,67 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findByAuthor(String author) {
+    public List<Book> findByAuthor(String author) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
         BookValidator bookValidator = new BookValidator();
         List<Book> targetBooks = new ArrayList<>();
 
         if (bookValidator.validateSingleAuthor(author)) {
-            targetBooks = bookListDao.findByAuthor(author);
+            try {
+                targetBooks = bookListDao.findByAuthor(author);
+            } catch (DaoApplicationException e) {
+                throw new ServiceApplicationException("Error while finding book by Author from storage", e);
+            }
         }
 
         return targetBooks;
     }
 
     @Override
-    public List<Book> findByYearPublication(int yearPublication) {
+    public List<Book> findByYearPublication(int yearPublication) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
         BookValidator bookValidator = new BookValidator();
         List<Book> targetBooks = new ArrayList<>();
 
         if (bookValidator.validateYearPublication(yearPublication)) {
-            targetBooks = bookListDao.findByYearPublication(yearPublication);
+            try {
+                targetBooks = bookListDao.findByYearPublication(yearPublication);
+            } catch (DaoApplicationException e) {
+                throw new ServiceApplicationException("Error while finding book by Year publication from storage", e);
+            }
         }
 
         return targetBooks;
     }
 
     @Override
-    public List<Book> findByLanguage(Language language) {
+    public List<Book> findByLanguage(Language language) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
         List<Book> targetBooks = new ArrayList<>();
 
         if (language != null) {
-            targetBooks = bookListDao.findByLanguage(language);
+            try {
+                targetBooks = bookListDao.findByLanguage(language);
+            } catch (DaoApplicationException e) {
+                throw new ServiceApplicationException("Error while finding book by Language from storage", e);
+            }
         }
 
         return targetBooks;
     }
 
     @Override
-    public List<Book> sortById() {
+    public List<Book> sortByTag(String sortTag) throws ServiceApplicationException {
         BookListDaoImpl bookListDao = new BookListDaoImpl();
-        List<Book> sortedList = bookListDao.sortById();
+        List<Book> sortedList;
 
-        return sortedList;
-    }
-
-    @Override
-    public List<Book> sortByTitle() {
-        BookListDaoImpl bookListDao = new BookListDaoImpl();
-        List<Book> sortedList = null;
         try {
-            sortedList = bookListDao.findByTitle();
+            sortedList = bookListDao.findAll(sortTag);
         } catch (DaoApplicationException e) {
-            e.printStackTrace();
+            throw new ServiceApplicationException("Error while sorting books from storage", e);
         }
 
         return sortedList;
     }
 
-    @Override
-    public List<Book> sortByAuthor() {
-        BookListDaoImpl bookListDao = new BookListDaoImpl();
-        List<Book> sortedList = bookListDao.sortByAuthor();
-
-        return sortedList;
-    }
-
-    @Override
-    public List<Book> sortByYearPublication() {
-        BookListDaoImpl bookListDao = new BookListDaoImpl();
-        List<Book> sortedList = bookListDao.sortByYearPublication();
-
-        return sortedList;
-    }
-
-    @Override
-    public List<Book> sortByLanguage() {
-        BookListDaoImpl bookListDao = new BookListDaoImpl();
-        List<Book> sortedList = bookListDao.sortByLanguage();
-
-        return sortedList;
-    }
 }

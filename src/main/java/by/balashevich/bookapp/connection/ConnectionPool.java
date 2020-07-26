@@ -1,7 +1,6 @@
 package by.balashevich.bookapp.connection;
 
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
-import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,16 +22,12 @@ public class ConnectionPool {
     private BlockingQueue<ProxyConnection> freeConnections;
     private Queue<ProxyConnection> surrenderedConnections;
 
-    public static ConnectionPool getInstance(){
+    public static ConnectionPool getInstance() {
         if (!instanceIsCreated) {
 
             synchronized (ConnectionPool.class) {
                 if (!instanceIsCreated) {
-                    try {
-                        instance = new ConnectionPool();
-                    } catch (ConnectionDatabaseException e) {
-                        System.out.println("Error while connection pool creating " + e); //there must be Logger
-                    }
+                    instance = new ConnectionPool();
                     instanceIsCreated = true;
                 }
             }
@@ -41,38 +36,35 @@ public class ConnectionPool {
         return instance;
     }
 
-    ConnectionPool() throws ConnectionDatabaseException {
+    private ConnectionPool() {
         try {
             Class.forName(DRIVER_NAME);
-        } catch (ClassNotFoundException e) {
-            throw new ConnectionDatabaseException("Error while register jdbc driver", e);
-        }
-        freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
-        surrenderedConnections = new ArrayDeque<>(POOL_SIZE);
+            freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
+            surrenderedConnections = new ArrayDeque<>(POOL_SIZE);
 
-        for (int i = 0; i < POOL_SIZE; i++) {
-            try {
+            for (int i = 0; i < POOL_SIZE; i++) {
                 freeConnections.offer(new ProxyConnection(DriverManager.getConnection(URL, LOGIN, PASSWORD)));
-            } catch (SQLException e) {
-                throw new ConnectionDatabaseException("Error while initialize connections", e);
             }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Error while connection pool creating " + e); //there must be Logger
         }
     }
 
     public Connection getConnection() throws ConnectionDatabaseException {
-        Connection connection;
+        ProxyConnection connection;
+
         try {
             connection = freeConnections.take();
-            surrenderedConnections.offer((ProxyConnection) connection);
-        } catch (InterruptedException e) {  // TODO: 23.07.2020 is it ok to throw custom exception on interrupted
+            surrenderedConnections.offer(connection);
+        } catch (InterruptedException e) {
             throw new ConnectionDatabaseException("Error while getting connection", e);
         }
 
         return connection;
     }
 
-    public void releaseConnection(Connection connection) throws ConnectionDatabaseException { // FIXME: 23.07.2020 argument is ConnectionImpl
-        if (connection.getClass().getSimpleName().equals("ProxyConnection")) {
+    public void releaseConnection(Connection connection) throws ConnectionDatabaseException {
+        if (connection instanceof ProxyConnection) {
             surrenderedConnections.remove(connection);
             freeConnections.offer((ProxyConnection) connection);
         } else {
@@ -92,9 +84,8 @@ public class ConnectionPool {
     }
 
     private void deregisterDrivers() throws SQLException {
-        while(DriverManager.getDrivers().hasMoreElements()){
+        while (DriverManager.getDrivers().hasMoreElements()) {
             DriverManager.deregisterDriver(DriverManager.getDrivers().nextElement());
-            MysqlDataSource dataSource = new MysqlDataSource();
         }
     }
 }

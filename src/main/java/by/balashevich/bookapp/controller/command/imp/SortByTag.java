@@ -9,34 +9,27 @@ import by.balashevich.bookapp.model.entity.Book;
 import by.balashevich.bookapp.model.service.impl.BookServiceImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class FindByIdCommand implements ActionCommand {
-    private static final String BOOK_ID = "bookId";
+public class SortByTag implements ActionCommand {
+    private static final String SORT_TAG = "sortTag";
 
     @Override
     public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 
-        if (actionParameters.containsKey(BOOK_ID)) {
-            long bookId = Long.parseLong(actionParameters.get(BOOK_ID));
+        if (actionParameters.containsKey(SORT_TAG)) {
+            String sortingTag = actionParameters.get(SORT_TAG);
             try {
-                Optional<Book> findResult = bookService.findById(bookId);
-                if (findResult.isPresent()) {
-                    executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ITEMCARD.getPath());
-                    executeResult.put(ResponseParameterType.BOOK_STORAGE.getName(), findResult.get());
-                }
-            } catch(ServiceApplicationException e){
+                List<Book> sortResult = bookService.sortByTag(sortingTag);
+                executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.MAIN.getPath());
+                executeResult.put(ResponseParameterType.BOOK_STORAGE.getName(), sortResult);
+            } catch (ServiceApplicationException e) {
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
                 executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e.getMessage());
             }
-        }
-
-        if (executeResult.isEmpty()) {
-            executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.MAIN.getPath());
-            executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.FINDEMPTY.getText());
         }
 
         return executeResult;

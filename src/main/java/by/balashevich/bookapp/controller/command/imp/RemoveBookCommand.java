@@ -17,10 +17,10 @@ public class RemoveBookCommand implements ActionCommand {
     private static final String BOOK_PARAMS = "bookParams";
 
     @Override
-    public Map<String, String> execute(Map<String, String> actionParameters) {
+    public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         BookCreator bookCreator = new BookCreator();
-        Map<String, String> executeResult = new HashMap<>();
+        Map<String, Object> executeResult = new HashMap<>();
 
         if (actionParameters.containsKey(BOOK_PARAMS)) {
             Optional<Book> transferredBook = bookCreator.createBook(actionParameters.get(BOOK_PARAMS));

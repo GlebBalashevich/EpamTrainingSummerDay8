@@ -57,7 +57,7 @@ public class ProxyConnection implements Connection {
     @Override
     public void close(){
         try {
-            ConnectionPool.getInstance().releaseConnection(connection);
+            ConnectionPool.getInstance().releaseConnection(this);
         } catch (ConnectionDatabaseException e) {
             System.out.println("Error while connection realising " + e); //there must be Logger
         }

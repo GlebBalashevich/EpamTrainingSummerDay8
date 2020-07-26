@@ -18,10 +18,10 @@ public class Controller {
         return instance;
     }
 
-    public Map<String, String> doBookAction(String commandType, Map<String, String> actionParameters) {
+    public Map<String, Object> doBookAction(String commandType, Map<String, String> actionParameters) {
         CommandProvider command = new CommandProvider();
         ActionCommand actionCommand = command.defineCommand(commandType);
-        Map<String, String> actionResult = actionCommand.execute(actionParameters);
+        Map<String, Object> actionResult = actionCommand.execute(actionParameters);
 
         return actionResult;
     }

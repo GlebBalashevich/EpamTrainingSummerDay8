@@ -8,7 +8,7 @@ public enum Language {
 
     private final String name;
 
-    private Language(String name) {
+    Language(String name) {
         this.name = name;
     }
 

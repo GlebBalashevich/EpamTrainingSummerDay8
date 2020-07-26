@@ -10,9 +10,10 @@ import java.util.Map;
 public class EmptyCommand implements ActionCommand {
 
     @Override
-    public Map<String, String> execute(Map<String, String> actionParameters) {
-        Map<String, String> executeResult = new HashMap<>();
+    public Map<String, Object> execute(Map<String, String> actionParameters) {
+        Map<String, Object> executeResult = new HashMap<>();
         executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.MAIN.getPath());
+
         return executeResult;
     }
 }

@@ -1,9 +1,12 @@
 package by.balashevich.bookapp.model.creator;
 
+import by.balashevich.bookapp.dao.BookTableColumn;
 import by.balashevich.bookapp.model.entity.Book;
 import by.balashevich.bookapp.model.entity.Language;
 import by.balashevich.bookapp.validator.BookValidator;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,19 @@ public class BookCreator {
     private static final String LIST_DELIMITER = ",";
     private static final String ELEMENT_DELIMITER = ":";
     private static final String LIST_BRACKET = "\\[?\\]?";
+
+    public Book createBookFromSql (ResultSet resultSet) throws SQLException {
+        long bookId = resultSet.getLong(BookTableColumn.BOOKID.getLabel());
+        String title = resultSet.getString(BookTableColumn.TITLE.getLabel());
+        String authorsData = resultSet.getString(BookTableColumn.AUTHORS.getLabel());
+        List<String> authors = createList(authorsData);
+        int yearPublication = resultSet.getInt(BookTableColumn.YEAR_PUBLICATION.getLabel());
+        Language language = Language.valueOf(resultSet.getString(BookTableColumn.LANGUAGE.getLabel()));
+
+        Book book = new Book(bookId, title, authors, yearPublication, language);
+
+        return book;
+    }
 
     public Optional<Book> createBook(String bookData){
         BookValidator bookValidator = new BookValidator();

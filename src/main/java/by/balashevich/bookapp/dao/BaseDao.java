@@ -10,16 +10,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public interface BaseDao<K, T extends Entity> {
+public interface BaseDao<T extends Entity> {
     boolean add(T t) throws DaoApplicationException;
 
     boolean remove(T t) throws DaoApplicationException;
 
     T update(T t) throws DaoApplicationException;
 
-    List<T> findAll() throws DaoApplicationException;
+    List<T> findAll(String ...sortTag) throws DaoApplicationException;
 
-    T findById(K id) throws DaoApplicationException;
+    T findById(long id) throws DaoApplicationException;
 
     default void close(Statement statement) throws DaoApplicationException {
         if (statement != null) {

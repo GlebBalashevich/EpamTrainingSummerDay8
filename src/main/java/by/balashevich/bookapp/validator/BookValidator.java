@@ -8,7 +8,7 @@ import java.util.List;
 public class BookValidator {
     private static final int MAX_TITLE_LENGTH = 255;
     private static final int MAX_AUTHOR_LENGTH = 40;
-    private static final int MAX_AUTHORS_NUMBER = 4;
+    private static final int MAX_AUTHORS_NUMBER = 5;
     private static final String TITLE_CHARACTER = "[\\w\\p{Space}\\p{Pd}\\.']+";
     private static final String AUTHOR_CHARACTER = "[\\p{L}\\p{Space}\\.]+";
 
