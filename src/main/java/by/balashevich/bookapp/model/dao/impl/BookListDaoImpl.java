@@ -1,12 +1,12 @@
 package by.balashevich.bookapp.model.dao.impl;
 
+import by.balashevich.bookapp.exception.ConnectionDatabaseException;
+import by.balashevich.bookapp.exception.DaoApplicationException;
 import by.balashevich.bookapp.model.connection.ConnectionPool;
+import by.balashevich.bookapp.model.creator.BookCreator;
 import by.balashevich.bookapp.model.dao.BookListDao;
 import by.balashevich.bookapp.model.dao.BookTableColumn;
 import by.balashevich.bookapp.model.dao.SortTagConverter;
-import by.balashevich.bookapp.exception.ConnectionDatabaseException;
-import by.balashevich.bookapp.exception.DaoApplicationException;
-import by.balashevich.bookapp.model.creator.BookCreator;
 import by.balashevich.bookapp.model.entity.Book;
 import by.balashevich.bookapp.model.entity.Language;
 
@@ -264,7 +264,7 @@ public class BookListDaoImpl implements BookListDao {
         return targetBooks;
     }
 
-    public Book createBookFromSql (ResultSet resultSet) throws SQLException {
+    public Book createBookFromSql(ResultSet resultSet) throws SQLException {
         BookCreator bookCreator = new BookCreator();
         long bookId = resultSet.getLong(BookTableColumn.BOOKID.getLabel());
         String title = resultSet.getString(BookTableColumn.TITLE.getLabel());

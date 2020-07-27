@@ -14,7 +14,7 @@ public class BookCreator {
     private static final String ELEMENT_DELIMITER = ":";
     private static final String LIST_BRACKET = "\\[?\\]?";
 
-    public Optional<Book> createBook(String bookData){
+    public Optional<Book> createBook(String bookData) {
         BookValidator bookValidator = new BookValidator();
         Optional<Book> createdBook = Optional.empty();
         String[] bookElements = bookData.split(LINE_DELIMITER);
@@ -59,7 +59,7 @@ public class BookCreator {
         String[] elementsList = listData.split(LIST_DELIMITER);
         List<String> resultList = new ArrayList<>();
 
-        for(String author : elementsList){
+        for (String author : elementsList) {
             resultList.add(author.trim());
         }
 

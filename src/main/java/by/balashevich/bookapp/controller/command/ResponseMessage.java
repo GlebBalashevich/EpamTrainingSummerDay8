@@ -10,11 +10,11 @@ public enum ResponseMessage {
 
     private final String text;
 
-    ResponseMessage(String text){
+    ResponseMessage(String text) {
         this.text = text;
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 }

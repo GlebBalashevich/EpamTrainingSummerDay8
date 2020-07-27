@@ -1,8 +1,8 @@
 package by.balashevich.bookapp.model.dao;
 
-import by.balashevich.bookapp.model.connection.ConnectionPool;
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
 import by.balashevich.bookapp.exception.DaoApplicationException;
+import by.balashevich.bookapp.model.connection.ConnectionPool;
 import by.balashevich.bookapp.model.entity.Entity;
 
 import java.sql.Connection;
@@ -17,7 +17,7 @@ public interface BaseDao<T extends Entity> {
 
     T update(T t) throws DaoApplicationException;
 
-    List<T> findAll(String ...sortTag) throws DaoApplicationException;
+    List<T> findAll(String... sortTag) throws DaoApplicationException;
 
     T findById(long id) throws DaoApplicationException;
 

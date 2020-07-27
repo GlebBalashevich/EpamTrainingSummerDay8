@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 public class EmptyCommandTest {
     EmptyCommand emptyCommand;

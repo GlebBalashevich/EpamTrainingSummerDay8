@@ -13,13 +13,14 @@ import org.testng.annotations.Test;
 import java.sql.SQLException;
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 public class FindByTitleCommandTest {
     FindByTitleCommand findByTitleCommand;
 
     @BeforeTest
-    public void setUp(){
+    public void setUp() {
         findByTitleCommand = new FindByTitleCommand();
     }
 
@@ -37,7 +38,7 @@ public class FindByTitleCommandTest {
         Map<String, String> request = new HashMap<>();
         request.put("title", "12 Cheers");
         List<Book> expectedList = new ArrayList<>();
-        expectedList.add(new Book(4,"12 Cheers",
+        expectedList.add(new Book(4, "12 Cheers",
                 new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1925, Language.RUSSIAN));
         expectedList.add(new Book(5, "12 Cheers",
                 new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1940, Language.ENGLISH));

@@ -13,13 +13,14 @@ import org.testng.annotations.Test;
 import java.sql.SQLException;
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 public class FindByYearPublicationCommandTest {
     FindByYearPublicationCommand findByYearPublicationCommand;
 
     @BeforeTest
-    public void setUp(){
+    public void setUp() {
         findByYearPublicationCommand = new FindByYearPublicationCommand();
     }
 
@@ -37,9 +38,9 @@ public class FindByYearPublicationCommandTest {
         Map<String, String> request = new HashMap<>();
         request.put("yearPublication", "1925");
         List<Book> expectedList = new ArrayList<>();
-        expectedList.add(new Book(4,"12 Cheers",
+        expectedList.add(new Book(4, "12 Cheers",
                 new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1925, Language.RUSSIAN));
-        expectedList.add(new Book(10,"Process",
+        expectedList.add(new Book(10, "Process",
                 new ArrayList<>(Arrays.asList("F.Kafka")), 1925, Language.GERMAN));
 
         Map<String, Object> expected = new HashMap<>();

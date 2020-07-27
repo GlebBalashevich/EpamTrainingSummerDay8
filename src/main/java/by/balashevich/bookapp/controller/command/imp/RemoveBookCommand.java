@@ -33,7 +33,7 @@ public class RemoveBookCommand implements ActionCommand {
                     }
                 } catch (ServiceApplicationException e) {
                     executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
-                    executeResult.put(ResponseParameterType.MESSAGE.getName(),ResponseMessage.APPERROR.getText() + e);
+                    executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
                 }
             }
         }

@@ -5,18 +5,18 @@ import by.balashevich.bookapp.controller.command.CommandType;
 
 public class CommandProvider {
 
-    public ActionCommand defineCommand(String command){
+    public ActionCommand defineCommand(String command) {
         ActionCommand definedCommand = null;
 
-        if (command != null && !command.isBlank()){
-            try{
+        if (command != null && !command.isBlank()) {
+            try {
                 definedCommand = CommandType.valueOf(command.toUpperCase()).getCommand();
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 definedCommand = CommandType.EMPTY_COMMAND.getCommand();
             }
         }
 
-        if(definedCommand == null){
+        if (definedCommand == null) {
             definedCommand = CommandType.EMPTY_COMMAND.getCommand();
         }
 

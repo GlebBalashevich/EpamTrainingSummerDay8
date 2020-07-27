@@ -3,7 +3,10 @@ package by.balashevich.bookapp;
 import by.balashevich.bookapp.model.entity.Book;
 import by.balashevich.bookapp.model.entity.Language;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +18,7 @@ public class TestBookStorageData {
             "VALUES (?, ?, ?, ?)";
     private static List<Book> bookList;
 
-    private TestBookStorageData(){
+    private TestBookStorageData() {
     }
 
     public static void resetBookStorage() throws ClassNotFoundException, SQLException {
@@ -26,7 +29,7 @@ public class TestBookStorageData {
         statement.executeUpdate();
         statement.execute(SQL_RESET_PRIMARY_KEY);
         statement = connection.prepareStatement(SQL_ADD_BOOKS);
-        for(Book book : bookList){
+        for (Book book : bookList) {
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthors().toString());
             statement.setInt(3, book.getYearPublication());

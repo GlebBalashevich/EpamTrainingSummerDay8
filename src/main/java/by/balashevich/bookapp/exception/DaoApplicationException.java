@@ -1,6 +1,6 @@
 package by.balashevich.bookapp.exception;
 
-public class DaoApplicationException extends Exception{
+public class DaoApplicationException extends Exception {
     public DaoApplicationException() {
         super();
     }

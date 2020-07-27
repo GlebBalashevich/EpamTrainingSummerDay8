@@ -2,7 +2,7 @@ package by.balashevich.bookapp.model.entity;
 
 import java.util.List;
 
-public class Book extends Entity{
+public class Book extends Entity {
     private long bookId;
     private String title;
     private List<String> authors;
@@ -66,10 +66,10 @@ public class Book extends Entity{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 

@@ -19,7 +19,7 @@ public enum CommandType {
         this.command = command;
     }
 
-    public ActionCommand getCommand(){
+    public ActionCommand getCommand() {
         return command;
     }
 }

@@ -9,11 +9,11 @@ public enum BookTableColumn {
 
     private final String label;
 
-    BookTableColumn(String label){
+    BookTableColumn(String label) {
         this.label = label;
     }
 
-    public String getLabel(){
+    public String getLabel() {
         return label;
     }
 

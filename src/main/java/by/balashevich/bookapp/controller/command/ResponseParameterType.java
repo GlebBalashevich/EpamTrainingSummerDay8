@@ -7,7 +7,7 @@ public enum ResponseParameterType {
 
     private final String name;
 
-    ResponseParameterType(String name){
+    ResponseParameterType(String name) {
         this.name = name;
     }
 

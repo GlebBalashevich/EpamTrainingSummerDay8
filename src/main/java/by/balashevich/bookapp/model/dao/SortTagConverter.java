@@ -5,13 +5,13 @@ import java.util.StringJoiner;
 public class SortTagConverter {
     private static final String DELIMITER = ", ";
 
-    private SortTagConverter(){
+    private SortTagConverter() {
     }
 
-    public static String convertTag (String[] sortTag){
+    public static String convertTag(String[] sortTag) {
         StringJoiner sortQuerySuffix = new StringJoiner(DELIMITER);
 
-        for(String tag : sortTag) {
+        for (String tag : sortTag) {
             switch (tag) {
                 case "title":
                     sortQuerySuffix.add(BookTableColumn.TITLE.getLabel());

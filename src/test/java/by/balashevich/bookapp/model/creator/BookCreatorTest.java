@@ -10,13 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class BookCreatorTest {
     BookCreator bookCreator;
 
     @BeforeTest
-    public void setUp(){
+    public void setUp() {
         bookCreator = new BookCreator();
     }
 
@@ -24,7 +25,7 @@ public class BookCreatorTest {
     public void createBookTestPositive() {
         String bookData = "title : The Lord of The Rings; authors : J.R.R. Tolkien, Bilbo Baggins; yearPublication : 1956; language : ENGLISH";
         Optional<Book> expected = Optional.of(new Book("The Lord of The Rings",
-                new ArrayList<>(Arrays.asList("J.R.R. Tolkien", "Bilbo Baggins")),1956, Language.ENGLISH));
+                new ArrayList<>(Arrays.asList("J.R.R. Tolkien", "Bilbo Baggins")), 1956, Language.ENGLISH));
         Optional<Book> actual = bookCreator.createBook(bookData);
         actual.get().setBookId(expected.get().getBookId());
         assertEquals(actual, expected);
@@ -34,7 +35,7 @@ public class BookCreatorTest {
     public void createBookTestNegative() {
         String bookData = "title : The Lord of The Rings; yearPublication : 1956; language : ENGLISH";
         Optional<Book> expected = Optional.of(new Book("The Lord of The Rings",
-                new ArrayList<>(Arrays.asList("J.R.R. Tolkien", "Bilbo Baggins")),1956, Language.ENGLISH));
+                new ArrayList<>(Arrays.asList("J.R.R. Tolkien", "Bilbo Baggins")), 1956, Language.ENGLISH));
         Optional<Book> actual = bookCreator.createBook(bookData);
         assertNotEquals(actual, expected);
     }

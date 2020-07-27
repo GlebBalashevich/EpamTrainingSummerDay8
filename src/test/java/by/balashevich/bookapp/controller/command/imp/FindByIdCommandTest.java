@@ -11,15 +11,19 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 public class FindByIdCommandTest {
     FindByIdCommand findByIdCommand;
 
     @BeforeTest
-    public void setUp(){
+    public void setUp() {
         findByIdCommand = new FindByIdCommand();
     }
 

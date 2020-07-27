@@ -16,7 +16,7 @@ public class FindByAuthorCommand implements ActionCommand {
     private static final String AUTHOR_KEY = "author";
 
     @Override
-    public Map<String, Object> execute(Map<String, String> actionParameters){
+    public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 
@@ -28,7 +28,7 @@ public class FindByAuthorCommand implements ActionCommand {
                     executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.SEARCH_RESULT.getPath());
                     executeResult.put(ResponseParameterType.BOOK_STORAGE.getName(), findResult);
                 }
-            } catch(ServiceApplicationException e){
+            } catch (ServiceApplicationException e) {
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
                 executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
             }

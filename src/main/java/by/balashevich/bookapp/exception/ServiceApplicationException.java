@@ -1,6 +1,6 @@
 package by.balashevich.bookapp.exception;
 
-public class ServiceApplicationException extends Exception{
+public class ServiceApplicationException extends Exception {
     public ServiceApplicationException() {
         super();
     }

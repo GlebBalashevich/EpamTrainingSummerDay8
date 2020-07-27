@@ -16,7 +16,7 @@ public class FindByYearPublicationCommand implements ActionCommand {
     private static final String YEAR_PUBLICATION_KEY = "yearPublication";
 
     @Override
-    public Map<String, Object> execute (Map<String, String> actionParameters) {
+    public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 

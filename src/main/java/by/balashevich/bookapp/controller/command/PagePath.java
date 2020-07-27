@@ -8,11 +8,11 @@ public enum PagePath {
 
     private final String path;
 
-    PagePath(String path){
+    PagePath(String path) {
         this.path = path;
     }
 
-    public String getPath(){
+    public String getPath() {
         return path;
     }
 }

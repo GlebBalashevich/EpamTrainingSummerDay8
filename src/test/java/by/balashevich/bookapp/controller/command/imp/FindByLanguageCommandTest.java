@@ -13,13 +13,14 @@ import org.testng.annotations.Test;
 import java.sql.SQLException;
 import java.util.*;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 public class FindByLanguageCommandTest {
     FindByLanguageCommand findByLanguageCommand;
 
     @BeforeTest
-    public void setUp(){
+    public void setUp() {
         findByLanguageCommand = new FindByLanguageCommand();
     }
 
@@ -37,11 +38,11 @@ public class FindByLanguageCommandTest {
         Map<String, String> request = new HashMap<>();
         request.put("language", "RUSSIAN");
         List<Book> expectedList = new ArrayList<>();
-        expectedList.add(new Book(4,"12 Cheers",
+        expectedList.add(new Book(4, "12 Cheers",
                 new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1925, Language.RUSSIAN));
-        expectedList.add(new Book(7,"Roadside Picnic",
+        expectedList.add(new Book(7, "Roadside Picnic",
                 new ArrayList<>(Arrays.asList("A.Strugatsky", "B.Strugatsky")), 1956, Language.RUSSIAN));
-        expectedList.add(new Book(8,"Monday starts at Saturday",
+        expectedList.add(new Book(8, "Monday starts at Saturday",
                 new ArrayList<>(Arrays.asList("A.Strugatsky", "B.Strugatsky")), 1950, Language.RUSSIAN));
 
         Map<String, Object> expected = new HashMap<>();

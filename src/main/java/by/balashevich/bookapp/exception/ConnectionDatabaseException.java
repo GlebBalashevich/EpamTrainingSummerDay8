@@ -1,6 +1,6 @@
 package by.balashevich.bookapp.exception;
 
-public class ConnectionDatabaseException extends Exception{
+public class ConnectionDatabaseException extends Exception {
     public ConnectionDatabaseException() {
         super();
     }

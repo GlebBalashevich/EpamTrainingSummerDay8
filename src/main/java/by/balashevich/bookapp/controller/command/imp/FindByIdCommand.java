@@ -28,7 +28,7 @@ public class FindByIdCommand implements ActionCommand {
                     executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ITEMCARD.getPath());
                     executeResult.put(ResponseParameterType.BOOK_STORAGE.getName(), findResult.get());
                 }
-            } catch(ServiceApplicationException e){
+            } catch (ServiceApplicationException e) {
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
                 executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
             }
