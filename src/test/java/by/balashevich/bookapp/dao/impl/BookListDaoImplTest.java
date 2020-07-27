@@ -88,7 +88,7 @@ public class BookListDaoImplTest {
     }
 
     @Test
-    public void testFindById() throws DaoApplicationException {
+    public void findByIdTest() throws DaoApplicationException {
         Book expected = new Book(5, "12 Cheers",
                 new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1940, Language.ENGLISH);
 
@@ -97,7 +97,7 @@ public class BookListDaoImplTest {
     }
 
     @Test
-    public void testFindByTitle() throws DaoApplicationException {
+    public void findByTitleTest() throws DaoApplicationException {
         List<Book> expected = new ArrayList<>();
         expected.add(new Book(4,"12 Cheers",
                 new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1925, Language.RUSSIAN));
@@ -109,7 +109,7 @@ public class BookListDaoImplTest {
     }
 
     @Test
-    public void testFindByAuthor() throws DaoApplicationException {
+    public void findByAuthorTest() throws DaoApplicationException {
         List<Book> expected = new ArrayList<>();
         expected.add(new Book(7,"Roadside Picnic",
                 new ArrayList<>(Arrays.asList("A.Strugatsky", "B.Strugatsky")), 1956, Language.RUSSIAN));
@@ -121,10 +121,28 @@ public class BookListDaoImplTest {
     }
 
     @Test
-    public void testFindByYearPublication() {
+    public void findByYearPublicationTest() throws DaoApplicationException {
+        List<Book> expected = new ArrayList<>();
+        expected.add(new Book(4,"12 Cheers",
+                new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1925, Language.RUSSIAN));
+        expected.add(new Book(10,"Process",
+                new ArrayList<>(Arrays.asList("F.Kafka")), 1925, Language.GERMAN));
+
+        List<Book> actual = bookListDao.findByYearPublication(1925);
+        assertEquals(actual, expected);
     }
 
     @Test
-    public void testFindByLanguage() {
+    public void findByLanguage() throws DaoApplicationException {
+        List<Book> expected = new ArrayList<>();
+        expected.add(new Book(4,"12 Cheers",
+                new ArrayList<>(Arrays.asList("I.Ilf", "E.Petrov")), 1925, Language.RUSSIAN));
+        expected.add(new Book(7,"Roadside Picnic",
+                new ArrayList<>(Arrays.asList("A.Strugatsky", "B.Strugatsky")), 1956, Language.RUSSIAN));
+        expected.add(new Book(8,"Monday starts at Saturday",
+                new ArrayList<>(Arrays.asList("A.Strugatsky", "B.Strugatsky")), 1950, Language.RUSSIAN));
+
+        List<Book> actual = bookListDao.findByLanguage(Language.RUSSIAN);
+        assertEquals(actual, expected);
     }
 }

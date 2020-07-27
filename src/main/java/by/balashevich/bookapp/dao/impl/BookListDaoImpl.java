@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookListDaoImpl implements BookListDao {
+    private static final String MULTIPLE_SYMBOLS = "%";
     private static final String SQL_ADD_BOOK = "INSERT INTO book(title, authors, year_publication, language)" +
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_REMOVE_BOOK = "DELETE FROM book " +
@@ -27,7 +28,7 @@ public class BookListDaoImpl implements BookListDao {
             "year_publication = ?, language = ? WHERE bookid = ?";
     private static final String SQL_FIND_BOOK_BY_ID = SQL_FIND_ALL_BOOKS + " WHERE bookid = ?";
     private static final String SQL_FIND_BOOKS_BY_TITLE = SQL_FIND_ALL_BOOKS + " WHERE title = ?";
-    private static final String SQL_FIND_BOOKS_BY_AUTHOR = SQL_FIND_ALL_BOOKS + " WHERE authors LIKE %?%"; // FIXME: 27.07.2020 correct query
+    private static final String SQL_FIND_BOOKS_BY_AUTHOR = SQL_FIND_ALL_BOOKS + " WHERE authors LIKE ?"; // FIXME: 27.07.2020 correct query
     private static final String SQL_FIND_BOOKS_BY_YEAR_PUBLICATION = SQL_FIND_ALL_BOOKS + " WHERE year_publication = ?";
     private static final String SQL_FIND_BOOKS_BY_LANGUAGE = SQL_FIND_ALL_BOOKS + " WHERE language = ?";
     private static final String SQL_SORT_QUERY_PREFIX = " ORDER BY ";
@@ -199,7 +200,7 @@ public class BookListDaoImpl implements BookListDao {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
             try (Connection connection = connectionPool.getConnection();
                  PreparedStatement statement = connection.prepareStatement(SQL_FIND_BOOKS_BY_AUTHOR)) {
-                statement.setString(1, author);
+                statement.setString(1, MULTIPLE_SYMBOLS + author + MULTIPLE_SYMBOLS);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         Book book = bookCreator.createBookFromSql(resultSet);
