@@ -22,9 +22,8 @@ public class ConnectionPool {
     private BlockingQueue<ProxyConnection> freeConnections;
     private Queue<ProxyConnection> surrenderedConnections;
 
-    public static ConnectionPool getInstance() {
+    public static ConnectionPool getInstance() throws ConnectionDatabaseException {
         if (!instanceIsCreated) {
-
             synchronized (ConnectionPool.class) {
                 if (!instanceIsCreated) {
                     instance = new ConnectionPool();
@@ -36,7 +35,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    private ConnectionPool() {
+    private ConnectionPool() throws ConnectionDatabaseException {
         try {
             Class.forName(DRIVER_NAME);
             freeConnections = new LinkedBlockingDeque<>(POOL_SIZE);
@@ -46,7 +45,7 @@ public class ConnectionPool {
                 freeConnections.offer(new ProxyConnection(DriverManager.getConnection(URL, LOGIN, PASSWORD)));
             }
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Error while connection pool creating " + e); //there must be Logger
+            throw new ConnectionDatabaseException("Error while connection pool creating", e);
         }
     }
 
