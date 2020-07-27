@@ -1,6 +1,6 @@
-package by.balashevich.bookapp.dao;
+package by.balashevich.bookapp.model.dao;
 
-import by.balashevich.bookapp.connection.ConnectionPool;
+import by.balashevich.bookapp.model.connection.ConnectionPool;
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
 import by.balashevich.bookapp.exception.DaoApplicationException;
 import by.balashevich.bookapp.model.entity.Entity;

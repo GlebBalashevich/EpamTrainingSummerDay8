@@ -1,9 +1,9 @@
-package by.balashevich.bookapp.dao.impl;
+package by.balashevich.bookapp.model.dao.impl;
 
-import by.balashevich.bookapp.connection.ConnectionPool;
-import by.balashevich.bookapp.dao.BookListDao;
-import by.balashevich.bookapp.dao.BookTableColumn;
-import by.balashevich.bookapp.dao.SortTagConverter;
+import by.balashevich.bookapp.model.connection.ConnectionPool;
+import by.balashevich.bookapp.model.dao.BookListDao;
+import by.balashevich.bookapp.model.dao.BookTableColumn;
+import by.balashevich.bookapp.model.dao.SortTagConverter;
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
 import by.balashevich.bookapp.exception.DaoApplicationException;
 import by.balashevich.bookapp.model.creator.BookCreator;

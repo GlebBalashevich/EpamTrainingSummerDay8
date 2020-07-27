@@ -1,4 +1,4 @@
-package by.balashevich.bookapp.dao;
+package by.balashevich.bookapp.model.dao;
 
 public enum BookTableColumn {
     BOOKID("bookid"),

@@ -1,4 +1,4 @@
-package by.balashevich.bookapp.connection;
+package by.balashevich.bookapp.model.connection;
 
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
 

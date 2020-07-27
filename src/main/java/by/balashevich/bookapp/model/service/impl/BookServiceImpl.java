@@ -1,6 +1,6 @@
 package by.balashevich.bookapp.model.service.impl;
 
-import by.balashevich.bookapp.dao.impl.BookListDaoImpl;
+import by.balashevich.bookapp.model.dao.impl.BookListDaoImpl;
 import by.balashevich.bookapp.exception.DaoApplicationException;
 import by.balashevich.bookapp.exception.ServiceApplicationException;
 import by.balashevich.bookapp.model.entity.Book;

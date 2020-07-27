@@ -1,6 +1,5 @@
 package by.balashevich.bookapp.model.creator;
 
-import by.balashevich.bookapp.dao.BookTableColumn;
 import by.balashevich.bookapp.model.entity.Book;
 import by.balashevich.bookapp.model.entity.Language;
 import by.balashevich.bookapp.validator.BookValidator;

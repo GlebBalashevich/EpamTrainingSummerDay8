@@ -1,4 +1,4 @@
-package by.balashevich.bookapp.dao.impl;
+package by.balashevich.bookapp.model.dao.impl;
 
 import by.balashevich.bookapp.TestBookStorageData;
 import by.balashevich.bookapp.exception.DaoApplicationException;
