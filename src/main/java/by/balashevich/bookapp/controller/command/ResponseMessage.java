@@ -8,7 +8,7 @@ public enum ResponseMessage {
     FINDEMPTY("Nothing was found for this query"),
     APPERROR("An error occurred in the app:");
 
-    private String text;
+    private final String text;
 
     ResponseMessage(String text){
         this.text = text;

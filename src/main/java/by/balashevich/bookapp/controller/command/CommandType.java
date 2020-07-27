@@ -10,10 +10,10 @@ public enum CommandType {
     FIND_AUTHOR(new FindByAuthorCommand()),
     FIND_YEAR_PUBLICATION(new FindByYearPublicationCommand()),
     FIND_LANGUAGE(new FindByLanguageCommand()),
-    SORT_BY_TAG(new SortByTag()),
+    SORT_BY_TAG(new SortByTagCommand()),
     EMPTY_COMMAND(new EmptyCommand());
 
-    private ActionCommand command;
+    private final ActionCommand command;
 
     CommandType(ActionCommand command) {
         this.command = command;

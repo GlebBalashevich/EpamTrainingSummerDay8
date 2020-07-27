@@ -6,7 +6,7 @@ public enum PagePath {
     ERROR("/jsp/error.jsp"),
     ITEMCARD("/jsp/itemcard.jsp");
 
-    private String path;
+    private final String path;
 
     PagePath(String path){
         this.path = path;

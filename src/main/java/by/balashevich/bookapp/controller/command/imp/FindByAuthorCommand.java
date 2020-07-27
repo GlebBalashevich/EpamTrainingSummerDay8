@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 public class FindByAuthorCommand implements ActionCommand {
-    private static final String AUTHOR = "author";
+    private static final String AUTHOR_KEY = "author";
 
     @Override
     public Map<String, Object> execute(Map<String, String> actionParameters){
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 
-        if (actionParameters.containsKey(AUTHOR)) {
-            String author = actionParameters.get(AUTHOR);
+        if (actionParameters.containsKey(AUTHOR_KEY)) {
+            String author = actionParameters.get(AUTHOR_KEY);
             try {
                 List<Book> findResult = bookService.findByAuthor(author);
                 if (!findResult.isEmpty()) {
@@ -30,7 +30,7 @@ public class FindByAuthorCommand implements ActionCommand {
                 }
             } catch(ServiceApplicationException e){
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
-                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e.getMessage());
+                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
             }
         }
 

@@ -13,15 +13,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public class FindByIdCommand implements ActionCommand {
-    private static final String BOOK_ID = "bookId";
+    private static final String BOOK_ID_KEY = "bookId";
 
     @Override
     public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 
-        if (actionParameters.containsKey(BOOK_ID)) {
-            long bookId = Long.parseLong(actionParameters.get(BOOK_ID));
+        if (actionParameters.containsKey(BOOK_ID_KEY)) {
+            long bookId = Long.parseLong(actionParameters.get(BOOK_ID_KEY));
             try {
                 Optional<Book> findResult = bookService.findById(bookId);
                 if (findResult.isPresent()) {
@@ -30,7 +30,7 @@ public class FindByIdCommand implements ActionCommand {
                 }
             } catch(ServiceApplicationException e){
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
-                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e.getMessage());
+                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
             }
         }
 

@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 public class FindByLanguageCommand implements ActionCommand {
-    private static final String LANGUAGE = "language";
+    private static final String LANGUAGE_KEY = "language";
 
     @Override
     public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 
-        if (actionParameters.containsKey(LANGUAGE)) {
-            Language language = Language.valueOf(actionParameters.get(LANGUAGE));
+        if (actionParameters.containsKey(LANGUAGE_KEY)) {
+            Language language = Language.valueOf(actionParameters.get(LANGUAGE_KEY));
             try {
                 List<Book> findResult = bookService.findByLanguage(language);
                 if (!findResult.isEmpty()) {
@@ -31,7 +31,7 @@ public class FindByLanguageCommand implements ActionCommand {
                 }
             } catch (ServiceApplicationException e) {
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
-                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e.getMessage());
+                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
             }
         }
 

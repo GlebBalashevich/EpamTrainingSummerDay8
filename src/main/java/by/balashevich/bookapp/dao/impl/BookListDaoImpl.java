@@ -2,6 +2,7 @@ package by.balashevich.bookapp.dao.impl;
 
 import by.balashevich.bookapp.connection.ConnectionPool;
 import by.balashevich.bookapp.dao.BookListDao;
+import by.balashevich.bookapp.dao.BookTableColumn;
 import by.balashevich.bookapp.dao.SortTagConverter;
 import by.balashevich.bookapp.exception.ConnectionDatabaseException;
 import by.balashevich.bookapp.exception.DaoApplicationException;
@@ -28,7 +29,7 @@ public class BookListDaoImpl implements BookListDao {
             "year_publication = ?, language = ? WHERE bookid = ?";
     private static final String SQL_FIND_BOOK_BY_ID = SQL_FIND_ALL_BOOKS + " WHERE bookid = ?";
     private static final String SQL_FIND_BOOKS_BY_TITLE = SQL_FIND_ALL_BOOKS + " WHERE title = ?";
-    private static final String SQL_FIND_BOOKS_BY_AUTHOR = SQL_FIND_ALL_BOOKS + " WHERE authors LIKE ?"; // FIXME: 27.07.2020 correct query
+    private static final String SQL_FIND_BOOKS_BY_AUTHOR = SQL_FIND_ALL_BOOKS + " WHERE authors LIKE ?";
     private static final String SQL_FIND_BOOKS_BY_YEAR_PUBLICATION = SQL_FIND_ALL_BOOKS + " WHERE year_publication = ?";
     private static final String SQL_FIND_BOOKS_BY_LANGUAGE = SQL_FIND_ALL_BOOKS + " WHERE language = ?";
     private static final String SQL_SORT_QUERY_PREFIX = " ORDER BY ";
@@ -109,7 +110,6 @@ public class BookListDaoImpl implements BookListDao {
     @Override
     public List<Book> findAll(String... sortTag) throws DaoApplicationException {
         List<Book> targetBooks = new ArrayList<>();
-        BookCreator bookCreator = new BookCreator();
 
         String sqlQuery = SQL_FIND_ALL_BOOKS;
 
@@ -127,7 +127,7 @@ public class BookListDaoImpl implements BookListDao {
                  ResultSet resultSet = statement.executeQuery()) {
 
                 while (resultSet.next()) {
-                    Book book = bookCreator.createBookFromSql(resultSet);
+                    Book book = createBookFromSql(resultSet);
                     targetBooks.add(book);
                 }
             } catch (SQLException | ConnectionDatabaseException e) {
@@ -142,7 +142,6 @@ public class BookListDaoImpl implements BookListDao {
 
     @Override
     public Book findById(long findingBookId) throws DaoApplicationException {
-        BookCreator bookCreator = new BookCreator();
         Book targetBook = null;
 
         try {
@@ -152,7 +151,7 @@ public class BookListDaoImpl implements BookListDao {
                 statement.setLong(1, findingBookId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        targetBook = bookCreator.createBookFromSql(resultSet);
+                        targetBook = createBookFromSql(resultSet);
                     }
                 }
             } catch (SQLException | ConnectionDatabaseException e) {
@@ -168,7 +167,6 @@ public class BookListDaoImpl implements BookListDao {
     @Override
     public List<Book> findByTitle(String title) throws DaoApplicationException {
         List<Book> targetBooks = new ArrayList<>();
-        BookCreator bookCreator = new BookCreator();
 
         try {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -177,7 +175,7 @@ public class BookListDaoImpl implements BookListDao {
                 statement.setString(1, title);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
-                        Book book = bookCreator.createBookFromSql(resultSet);
+                        Book book = createBookFromSql(resultSet);
                         targetBooks.add(book);
                     }
                 }
@@ -194,7 +192,6 @@ public class BookListDaoImpl implements BookListDao {
     @Override
     public List<Book> findByAuthor(String author) throws DaoApplicationException {
         List<Book> targetBooks = new ArrayList<>();
-        BookCreator bookCreator = new BookCreator();
 
         try {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -203,7 +200,7 @@ public class BookListDaoImpl implements BookListDao {
                 statement.setString(1, MULTIPLE_SYMBOLS + author + MULTIPLE_SYMBOLS);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
-                        Book book = bookCreator.createBookFromSql(resultSet);
+                        Book book = createBookFromSql(resultSet);
                         targetBooks.add(book);
                     }
                 }
@@ -220,7 +217,6 @@ public class BookListDaoImpl implements BookListDao {
     @Override
     public List<Book> findByYearPublication(int yearPublication) throws DaoApplicationException {
         List<Book> targetBooks = new ArrayList<>();
-        BookCreator bookCreator = new BookCreator();
 
         try {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -229,7 +225,7 @@ public class BookListDaoImpl implements BookListDao {
                 statement.setInt(1, yearPublication);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
-                        Book book = bookCreator.createBookFromSql(resultSet);
+                        Book book = createBookFromSql(resultSet);
                         targetBooks.add(book);
                     }
                 }
@@ -246,7 +242,6 @@ public class BookListDaoImpl implements BookListDao {
     @Override
     public List<Book> findByLanguage(Language language) throws DaoApplicationException {
         List<Book> targetBooks = new ArrayList<>();
-        BookCreator bookCreator = new BookCreator();
 
         try {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -255,7 +250,7 @@ public class BookListDaoImpl implements BookListDao {
                 statement.setString(1, language.getName());
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
-                        Book book = bookCreator.createBookFromSql(resultSet);
+                        Book book = createBookFromSql(resultSet);
                         targetBooks.add(book);
                     }
                 }
@@ -267,5 +262,19 @@ public class BookListDaoImpl implements BookListDao {
         }
 
         return targetBooks;
+    }
+
+    public Book createBookFromSql (ResultSet resultSet) throws SQLException {
+        BookCreator bookCreator = new BookCreator();
+        long bookId = resultSet.getLong(BookTableColumn.BOOKID.getLabel());
+        String title = resultSet.getString(BookTableColumn.TITLE.getLabel());
+        String authorsData = resultSet.getString(BookTableColumn.AUTHORS.getLabel());
+        List<String> authors = bookCreator.createList(authorsData);
+        int yearPublication = resultSet.getInt(BookTableColumn.YEAR_PUBLICATION.getLabel());
+        Language language = Language.valueOf(resultSet.getString(BookTableColumn.LANGUAGE.getLabel()));
+
+        Book book = new Book(bookId, title, authors, yearPublication, language);
+
+        return book;
     }
 }

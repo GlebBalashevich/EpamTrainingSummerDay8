@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AddBookCommand implements ActionCommand {
-    private static final String BOOK_PARAMS = "bookParams";
+    private static final String BOOK_PARAMETERS = "bookParameters";
 
     @Override
     public Map<String, Object> execute(Map<String, String> actionParameters) {
@@ -22,8 +22,8 @@ public class AddBookCommand implements ActionCommand {
         BookCreator bookCreator = new BookCreator();
         Map<String, Object> executeResult = new HashMap<>();
 
-        if (actionParameters.containsKey(BOOK_PARAMS)) {
-            Optional<Book> transferredBook = bookCreator.createBook(actionParameters.get(BOOK_PARAMS));
+        if (actionParameters.containsKey(BOOK_PARAMETERS)) {
+            Optional<Book> transferredBook = bookCreator.createBook(actionParameters.get(BOOK_PARAMETERS));
             if (transferredBook.isPresent()) {
                 try {
                     Book addingBook = transferredBook.get();
@@ -33,7 +33,7 @@ public class AddBookCommand implements ActionCommand {
                     }
                 } catch (ServiceApplicationException e) {
                     executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
-                    executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e.getMessage());
+                    executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
                 }
             }
         }

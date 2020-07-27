@@ -12,23 +12,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SortByTag implements ActionCommand {
-    private static final String SORT_TAG = "sortTag";
+public class SortByTagCommand implements ActionCommand {
+    private static final String SORT_TAG_KEY = "sortTag";
 
     @Override
     public Map<String, Object> execute(Map<String, String> actionParameters) {
         BookServiceImpl bookService = new BookServiceImpl();
         Map<String, Object> executeResult = new HashMap<>();
 
-        if (actionParameters.containsKey(SORT_TAG)) {
-            String sortingTag = actionParameters.get(SORT_TAG);
+        if (actionParameters.containsKey(SORT_TAG_KEY)) {
+            String sortingTag = actionParameters.get(SORT_TAG_KEY);
             try {
                 List<Book> sortResult = bookService.sortByTag(sortingTag);
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.MAIN.getPath());
                 executeResult.put(ResponseParameterType.BOOK_STORAGE.getName(), sortResult);
             } catch (ServiceApplicationException e) {
                 executeResult.put(ResponseParameterType.PAGE.getName(), PagePath.ERROR.getPath());
-                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e.getMessage());
+                executeResult.put(ResponseParameterType.MESSAGE.getName(), ResponseMessage.APPERROR.getText() + e);
             }
         }
 
